@@ -104,7 +104,7 @@
                                                 <td><c:out value="${sala.codigo}" /></td>
                                                 <td><c:out value="${sala.numero}" /></td>
                                                 <td><c:out value="${sala.nome}" /></td>
-                                                <td><fmt:formatNumber type="number" maxFractionDigits = "2" value="${sala.precoA}" /></td>
+                                                <td>R$ <fmt:formatNumber type="number" maxFractionDigits = "2" value="${sala.precoA}" /></td>
                                                 <td><a class="btn btn-success btn-xs" href="FrontController?action=PrepararEditarSala&codigo=<c:out value="${sala.codigo}"/>">Editar</a></td>
                                                 <td><a class="btn btn-danger btn-xs" href="FrontController?action=PrepararExcluirSala&codigo=<c:out value="${sala.codigo}"/>">Excluir</a></td>
                                             </tr>
