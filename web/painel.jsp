@@ -113,6 +113,9 @@
                                             </tr>
                                         </c:forEach>
                                     </table>
+                                    <c:if test="${todosOcupados.equals('true')}"> 
+                                        <div><a type="button" href="FrontController?action=Avise" class="btn btn-danger">Avise-me quando surgir quarto disponivel!</a></div>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>

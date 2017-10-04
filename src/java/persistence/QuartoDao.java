@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import model.Cliente;
 import model.Quarto;
 import model.QuartoCasal;
 import model.QuartoDuploSolteiro;
@@ -159,6 +160,26 @@ public class QuartoDao {
                     ", estado = '" + quarto.getEstado()
                             +"' where codigo = " + quarto.getCodigo());
                     
+        
+        }catch(SQLException e){
+            throw e;
+        }finally{
+            closeResources(conn, st);
+        }
+    }
+    
+    public void interesse(Cliente cliente, Quarto quarto) throws SQLException, ClassNotFoundException{
+        
+        Connection conn = null;
+        Statement st = null;
+        
+        try{
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();
+            st.execute("insert into interesse (cod_cliente, cod_quarto)" +
+                    "values (" +
+                    cliente.getCodigo() + "," +
+                    quarto.getCodigo() + ")");
         
         }catch(SQLException e){
             throw e;

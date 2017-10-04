@@ -8,6 +8,7 @@ package action;
 import controller.Action;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -42,6 +43,14 @@ public class DisponivelQuartoAction implements Action{
             quarto.setEstado(quarto.getQuartoEstado());
             QuartoDao.getInstance().update(quarto);
             
+            List<Quarto> quartos = Quarto.obterQuartos();
+            int cont = 1;
+            for(int i = 0; i < quartos.size(); i++){
+                if(quartos.get(i).getEstado().equals("disponivel")){
+                    cont = 0;
+                }
+            }
+            request.setAttribute("todosOcupados", cont);
             request.setAttribute("quartos", Quarto.obterQuartos());
             RequestDispatcher view = 
                     request.getRequestDispatcher("/painel.jsp");

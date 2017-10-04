@@ -15,18 +15,25 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Cliente;
 import model.Quarto;
+import persistence.QuartoDao;
 
 /**
  *
  * @author matheus
  */
-public class PainelAction implements Action{
+public class AviseAction implements Action{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             List<Quarto> quartos = Quarto.obterQuartos();
+            Cliente cliente = Cliente.obterCliente(Integer.parseInt(request.getParameter("textCodigo")));
+            for(int i = 0; i < quartos.size(); i++){
+                QuartoDao.getInstance().interesse(cliente, quartos.get(i));
+            }
+            
             String cont = "true";
             for(int i = 0; i < quartos.size(); i++){
                 if(quartos.get(i).getEstado().equals("disponivel")){
@@ -39,11 +46,11 @@ public class PainelAction implements Action{
                     request.getRequestDispatcher("/painel.jsp");
             view.forward(request, response);
         } catch (ServletException ex) {
-            Logger.getLogger(PainelAction.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AviseAction.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(PainelAction.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AviseAction.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PainelAction.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AviseAction.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

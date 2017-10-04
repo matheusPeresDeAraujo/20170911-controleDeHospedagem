@@ -7,13 +7,14 @@ package model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Observable;
 import persistence.QuartoDao;
 
 /**
  *
  * @author matheus
  */
-public abstract class Quarto {
+public abstract class Quarto extends Observable{
     
     protected int codigo;
     protected QuartoEstado quartoEstado;
@@ -60,6 +61,11 @@ public abstract class Quarto {
 
     public void setQuartoEstado(QuartoEstado quartoEstado) {
         this.quartoEstado = quartoEstado;
+        
+        if(quartoEstado.getEstado(this).equals("disponivel")){
+            setChanged();
+            notifyObservers();
+        }
     }
 
     public String getEstado() {

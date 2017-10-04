@@ -7,13 +7,15 @@ package model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import persistence.ClienteDao;
 
 /**
  *
  * @author matheus
  */
-public class Cliente {
+public class Cliente implements Observer{
         
     private int codigo;
     private int idade;
@@ -22,6 +24,8 @@ public class Cliente {
     private String telefone;
     private String celular;
     private String email;
+    
+    private Observable quarto;
 
     public Cliente() {
     }
@@ -107,5 +111,18 @@ public class Cliente {
     
     public static Cliente obterCliente(int codigo) throws SQLException, ClassNotFoundException{
         return ClienteDao.obterCliente(codigo);
+    }
+
+    public void setQuarto(Observable quarto){
+        this.quarto = (Observable)quarto;
+        quarto.addObserver(this);
+    }
+    
+    @Override
+    public void update(Observable quartoSubject, Object arg) {
+        if(quartoSubject instanceof Quarto){
+            Quarto quarto = (Quarto) quartoSubject;
+            System.out.println("Atençao " + getNome() + ", ficou disponivel o quarto. " + quarto.getNumero());
+         }
     }
 }
