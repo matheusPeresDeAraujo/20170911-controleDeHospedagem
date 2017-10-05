@@ -55,7 +55,7 @@ public class DesocuparQuartoAction implements Action{
             String resp = "";
             for(int i = 0; i < interessados.size(); i++){
                 resp = resp + "Enviando email para o cliente " + 
-                    ClienteDao.getInstance().obterCliente(interessados.get(0)).getNome() + "<br> O quarto " + quarto.getNumero() + " esta disponivel. <br>";
+                    ClienteDao.getInstance().obterCliente(interessados.get(i)).getNome() + "<br> O quarto " + quarto.getNumero() + " esta disponivel. <br>";
             }
             request.setAttribute("resp", resp);
             request.setAttribute("todosOcupados", cont);
