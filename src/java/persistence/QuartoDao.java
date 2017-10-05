@@ -188,6 +188,26 @@ public class QuartoDao {
         }
     }
     
+    public List interessados(Quarto quarto) throws SQLException, ClassNotFoundException{
+        Connection conn = null;
+        Statement st = null;
+        List busca = new ArrayList<>();
+        try{
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();
+            ResultSet rs = st.executeQuery("select cod_cliente from interesse where cod_quarto = " + quarto.getCodigo());
+            
+            while (rs.next()){
+                int codigo = Integer.parseInt(rs.getString("cod_cliente"));
+                busca.add(codigo);
+            }
+            return busca;
+        }catch(SQLException e){
+            throw e;
+        }finally{
+            closeResources(conn, st);
+        }
+    }
     public static void closeResources (Connection conn, Statement st) throws SQLException{
         try{
             if(st!=null) st.close();

@@ -19,6 +19,7 @@ import model.Aluga;
 import model.Cliente;
 import model.Quarto;
 import persistence.AlugaDao;
+import persistence.ClienteDao;
 import persistence.QuartoDao;
 
 /**
@@ -49,6 +50,14 @@ public class DesocuparQuartoAction implements Action{
                     cont = "false";
                 }
             }
+            
+            List<Integer> interessados = QuartoDao.getInstance().interessados(quarto);
+            String resp = "";
+            for(int i = 0; i < interessados.size(); i++){
+                resp = resp + "Enviando email para o cliente " + 
+                    ClienteDao.getInstance().obterCliente(interessados.get(0)).getNome() + "<br> O quarto " + quarto.getNumero() + " esta disponivel. <br>";
+            }
+            request.setAttribute("resp", resp);
             request.setAttribute("todosOcupados", cont);
             request.setAttribute("quartos", Quarto.obterQuartos());
             RequestDispatcher view = 

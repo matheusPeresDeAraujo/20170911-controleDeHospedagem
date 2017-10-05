@@ -29,7 +29,7 @@ public class AviseAction implements Action{
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             List<Quarto> quartos = Quarto.obterQuartos();
-            Cliente cliente = Cliente.obterCliente(Integer.parseInt(request.getParameter("textCodigo")));
+            Cliente cliente = Cliente.obterCliente(Integer.parseInt(request.getParameter("textCliente")));
             for(int i = 0; i < quartos.size(); i++){
                 QuartoDao.getInstance().interesse(cliente, quartos.get(i));
             }
