@@ -111,4 +111,12 @@ public abstract class Quarto extends Observable{
     public static Quarto obterQuarto(int codigo) throws SQLException, ClassNotFoundException{
         return QuartoDao.obterQuarto(codigo);
     }
+    
+    public QuartoMemento saveToMemento(){
+        return new QuartoMemento(quartoEstado);
+    }
+    
+    public void resteoreFromMemento(QuartoMemento memento){
+        quartoEstado = memento.getEstadoSalvo();
+    }
 }
