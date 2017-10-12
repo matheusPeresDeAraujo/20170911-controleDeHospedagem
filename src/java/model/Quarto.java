@@ -6,8 +6,10 @@
 package model;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 import persistence.QuartoDao;
 
 /**
@@ -30,6 +32,8 @@ public abstract class Quarto extends Observable{
     protected boolean frigobar;
     protected boolean tv;
     protected boolean computador;
+    
+    private List<Observer> observers = new ArrayList();
     
     public abstract String getTipo();
     public abstract double getPreco();
@@ -112,8 +116,23 @@ public abstract class Quarto extends Observable{
         return QuartoDao.obterQuarto(codigo);
     }
     
+    public void registerObserver(Observer observer){
+        observers.add(observer);
+    }
+    
+    public void removeObserver(Observer observer){
+        observers.remove(observer);
+    }
+    
     public QuartoMemento saveToMemento(){
         return new QuartoMemento(quartoEstado);
+    }
+    
+    public void notifyObservers(){
+        for(Observer ob : observers){
+            System.out.println("Notificando observers");
+            ob.update(this, ob);
+        }
     }
     
     public void resteoreFromMemento(QuartoMemento memento){
