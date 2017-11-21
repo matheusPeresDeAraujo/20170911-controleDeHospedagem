@@ -110,6 +110,9 @@
                                                 <td><a class="btn btn-success btn-xs " role="button" href="FrontController?action=PrepararCheckInQuarto&codigo=<c:out value="${quarto.codigo}"/>">Check-in</a></td>
                                                 <td><a class="btn btn-danger btn-xs " role="button" href="FrontController?action=PrepararCheckOutQuarto&codigo=<c:out value="${quarto.codigo}"/>">Check-out</a></td>
                                                 <!--<td><a class="btn btn-primary btn-xs " role="button" href="FrontController?action=PrepararReservarQuarto&codigo=<c:out value="${quarto.codigo}"/>">Reservar</a></td>-->
+                                                <c:forEach items="${quarto.estadosSalvos}" var="estadoSalvo">
+                                                    <td>${estadoSalvo}</td>
+                                                </c:forEach>
                                             </tr>
                                         </c:forEach>
                                     </table>

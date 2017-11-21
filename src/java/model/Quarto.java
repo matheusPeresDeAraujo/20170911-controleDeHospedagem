@@ -34,6 +34,7 @@ public abstract class Quarto extends Observable{
     protected boolean computador;
     
     private List<Observer> observers = new ArrayList();
+    protected List<QuartoMemento> estadosSalvos = new ArrayList();
     
     public abstract String getTipo();
     public abstract double getPreco();
@@ -106,6 +107,14 @@ public abstract class Quarto extends Observable{
     
     public String manutencao(){
         return this.quartoEstado.Manutencao(this);
+    }
+
+    public List<QuartoMemento> getEstadosSalvos() {
+        return estadosSalvos;
+    }
+
+    public void setEstadosSalvos(QuartoMemento estadosSalvos) {
+        this.estadosSalvos.add(estadosSalvos);
     }
     
     public static List<Quarto> obterQuartos() throws SQLException, ClassNotFoundException{

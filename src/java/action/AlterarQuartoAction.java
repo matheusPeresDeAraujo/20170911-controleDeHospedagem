@@ -8,16 +8,23 @@ package action;
 import controller.Action;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Cliente;
 import model.Quarto;
 import model.QuartoCasal;
+import model.QuartoDisponivel;
 import model.QuartoDuploSolteiro;
+import model.QuartoMemento;
 import model.QuartoSolteiro;
 import persistence.QuartoDao;
 
@@ -51,17 +58,39 @@ public class AlterarQuartoAction implements Action{
             String tipo = request.getParameter("textTipo");
             String vista = request.getParameter("textVista");
             String estado = request.getParameter("textEstado");
+            
             try{
-                Quarto quarto = null;
+                Quarto quartoE = null;
                 if(tipo.equals("single room")){
-                    quarto = new QuartoSolteiro(codigo, numero, vista, estado, estado);
+                    quartoE = new QuartoSolteiro(codigo, numero, vista, estado, estado);
                 }else if(tipo.equals("twin room")){
-                    quarto = new QuartoDuploSolteiro(codigo, numero, vista, estado, estado);
+                    quartoE = new QuartoDuploSolteiro(codigo, numero, vista, estado, estado);
                 }else if(tipo.equals("double room")){
-                    quarto = new QuartoCasal(codigo, numero, vista, estado, estado);
+                    quartoE = new QuartoCasal(codigo, numero, vista, estado, estado);
                 }  
-                QuartoDao.getInstance().update(quarto);
-                request.setAttribute("quartos", Quarto.obterQuartos());
+                QuartoDao.getInstance().update(quartoE);
+                
+                //Neste momento adiciono memento a lista do quarto alterado
+                HttpSession session = request.getSession(true);
+                List<Quarto> quartos = (List<Quarto>) session.getAttribute("quartos");
+                if (quartos == null) {
+                    quartos = new ArrayList<>();
+                    for(Quarto quarto : QuartoDao.getInstance().obterQuartos()){
+                        quartos.add(quarto);
+                    }
+                }
+                //Adicionando alteração | Momnto add disponivel a lista
+                for(Quarto quarto : quartos){
+                        if(quarto.getCodigo() == codigo){
+//                            quartos.remove(quarto);
+//                            quartos.add(quartoE);
+                              quarto.setQuartoEstado(new QuartoDisponivel());
+                        }
+                }
+                session.setAttribute("quartos", quartos);
+                
+                
+                //request.setAttribute("quartos", Quarto.obterQuartos());
                     RequestDispatcher view = 
                             request.getRequestDispatcher("/Quarto.jsp");
                     view.forward(request, response);

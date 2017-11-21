@@ -11,13 +11,13 @@ package model;
  */
 public class QuartoMemento {
     
-    private QuartoEstado estado;
+    private QuartoEstado estadoSalvo;
     
     public QuartoMemento(QuartoEstado estadoSalvar){
-        estado = estadoSalvar;
+        estadoSalvo = estadoSalvar;
     }
     
     public QuartoEstado getEstadoSalvo(){
-        return estado;
+        return estadoSalvo;
     }
 }

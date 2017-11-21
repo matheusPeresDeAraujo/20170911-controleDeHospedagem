@@ -98,6 +98,7 @@
                                             <th>Tipo</th>
                                             <th>Estado</th>
                                             <th colspan=2>Ação</th>
+                                            <th>Memento</th>
                                         </tr>
                                         <c:forEach items="${quartos}" var="quarto">
                                             <tr>
@@ -107,6 +108,13 @@
                                                 <td><c:out value="${quarto.estado}" /></td>
                                                 <td><a class="btn btn-success btn-xs" href="FrontController?action=PrepararEditarQuarto&codigo=<c:out value="${quarto.codigo}"/>">Editar</a></td>
                                                 <td><a class="btn btn-danger btn-xs" href="FrontController?action=PrepararExcluirQuarto&codigo=<c:out value="${quarto.codigo}"/>">Excluir</a></td>
+                                                <td>
+                                                    <select name="textTipo" class="form-control">
+                                                    <c:forEach items="${quarto.estadosSalvos}" var="memento">
+                                                        <option name="textTipo" value="memento">${memento.estadoSalvo}</option>
+                                                    </c:forEach>
+                                                    </select>
+                                                </td>
                                             </tr>
                                         </c:forEach>
                                     </table>

@@ -16,6 +16,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Cliente;
 import model.Quarto;
 
@@ -24,6 +25,7 @@ import model.Quarto;
  * @author matheus
  */
 public class PrepararCheckInQuartoAction implements Action{
+            
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int codigo = Integer.parseInt(request.getParameter("codigo"));
@@ -44,6 +46,7 @@ public class PrepararCheckInQuartoAction implements Action{
             clientes = Cliente.obterClientes();
             request.setAttribute("quarto", quarto);
             request.setAttribute("clientes", clientes);
+            
             RequestDispatcher view = request.getRequestDispatcher("/QuartoCheckIn.jsp");
             view.forward(request, response);
         } catch (SQLException ex) {

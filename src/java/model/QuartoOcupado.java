@@ -33,5 +33,10 @@ public class QuartoOcupado implements QuartoEstado{
         quarto.setEstado("ocupado");
         return "ocupado";
     }
+
+    @Override
+    public String toString() {
+        return "QuartoOcupado";
+    }
     
 }

@@ -31,4 +31,10 @@ public class QuartoManutencao implements QuartoEstado{
     public String getEstado(Quarto quarto) {
         return "manutencao";
     }
+
+    @Override
+    public String toString() {
+        return "QuartoManutencao";
+    }
+    
 }

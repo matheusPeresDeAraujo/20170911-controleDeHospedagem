@@ -8,13 +8,22 @@ package action;
 import controller.Action;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Quarto;
+import model.QuartoDisponivel;
+import model.QuartoEstado;
+import model.QuartoMemento;
+import persistence.QuartoDao;
 
 /**
  *
@@ -25,7 +34,18 @@ public class BuscarQuartoAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            request.setAttribute("quartos", Quarto.obterQuartos());
+            // Adiciono os qaurtos na sessão
+            // Neste momento nada esta salvo nenhuma alteração esta salva na sessão.
+            HttpSession session = request.getSession(true);
+            List<Quarto> quartos = (List<Quarto>) session.getAttribute("quartos");
+            if (quartos == null) {
+                quartos = new ArrayList<>();
+                for(Quarto quarto : QuartoDao.getInstance().obterQuartos()){
+                    quartos.add(quarto);
+                }
+            }
+            session.setAttribute("quartos", quartos);
+            //request.setAttribute("quartos", quartos);
             RequestDispatcher view = 
                     request.getRequestDispatcher("/Quarto.jsp");
             view.forward(request, response);

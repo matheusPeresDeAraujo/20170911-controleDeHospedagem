@@ -8,6 +8,7 @@ package action;
 import controller.Action;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +16,11 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Quarto;
+import model.QuartoDisponivel;
+import model.QuartoMemento;
+import persistence.QuartoDao;
 
 /**
  *
@@ -27,9 +32,29 @@ public class PrepararEditarQuartoAction implements Action{
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
            int codigo = Integer.parseInt(request.getParameter("codigo"));
-            Quarto quarto;
-            quarto = Quarto.obterQuarto(codigo);
-            request.setAttribute("quarto", quarto);
+            Quarto quartoE;
+            quartoE = Quarto.obterQuarto(codigo);
+            
+            
+            
+            //Neste momento adiciono memento a lista do quarto alterado
+            HttpSession session = request.getSession(true);
+            List<Quarto> quartos = (List<Quarto>) session.getAttribute("quartos");
+            if (quartos == null) {
+                quartos = new ArrayList<>();
+                for(Quarto quarto : QuartoDao.getInstance().obterQuartos()){
+                    quartos.add(quarto);
+                }
+            }
+            //Adicionando alteração | Momnto add disponivel a lista
+            for(Quarto quarto : quartos){
+                    if(quarto.getCodigo() == codigo){
+                        quarto.setEstadosSalvos(new QuartoMemento(new QuartoDisponivel()));
+                    }
+            }
+            session.setAttribute("quartos", quartos);
+            
+            request.setAttribute("quarto", quartoE);
             RequestDispatcher view = request.getRequestDispatcher("/QuartoUpdate.jsp");
             view.forward(request, response);
         } catch (ServletException ex) {

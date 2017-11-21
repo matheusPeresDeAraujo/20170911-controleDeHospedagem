@@ -10,7 +10,6 @@ package model;
  * @author matheus
  */
 public class QuartoDisponivel implements QuartoEstado{
-    
     @Override
     public String Disponivel(Quarto quarto) {
         return "Alteração recusada";
@@ -33,4 +32,11 @@ public class QuartoDisponivel implements QuartoEstado{
         quarto.setEstado("disponivel");
         return "disponivel";
     }
+
+    @Override
+    public String toString() {
+        return "QuartoDisponivel";
+    }
+    
+    
 }
